@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truck Parking Directions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #ffffff; /* White background */
+            color: #ffc220; /* Yellow text */
+        }
+        h1 {
+            color: #ffc220; /* Yellow text */
+            text-align: center;
+        }
+        p {
+            margin-bottom: 1.5em;
+        }
+        .language-selection, .form-container, .parking-instructions {
+            background: #0071ce; /* Entry screen box background */
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc220; /* Yellow border */
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffc220; /* Yellow text */
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ffc220; /* Yellow border */
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #ffffff; /* White background */
+            color: #000000; /* Black text */
+        }
+        textarea {
+            resize: vertical; /* Allow vertical resizing of textarea */
+        }
+        button {
+            background-color: #ffc220; /* Yellow background */
+            color: #000000; /* Black text */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ffdd57; /* Lighter yellow on hover */
+        }
+        footer {
+            color: #0071ce; /* Blue text */
+            text-align: center;
+            margin-top: 20px;
+        }
+        .message-screen {
+            display: none;
+            background: #0071ce; /* Message screen box background */
+            color: #ffc220; /* Yellow text */
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 2px solid #ffc220; /* Yellow border */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selection">
+        <h2>Driver Check-In</h2>
+        <form id="languageForm">
+            <label for="language">Choose a language:</label>
+            <select id="language" name="language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="ru">Russian</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ht">Haitian Creole</option>
+                <option value="it">Italian</option>
+                <option value="pa">Punjabi</option>
+                <option value="hi">Hindi</option>
+                <!-- Add more languages as needed -->
+            </select>
+            <button type="button" onclick="changeLanguage()">Go</button>
+        </form>
+    </div>
+
+    <div class="form-container" id="mainFormContainer" style="display: none;">
+        <h2 id="formTitle">Enter Assigned Dock Door Number</h2>
+        <form id="directionsForm">
+            <label id="gateNumberLabel" for="gateNumber">Door Number:</label>
+            <input type="text" id="gateNumber" name="gateNumber" placeholder="Enter the door number where you need to drop off the freight...">
+            <label id="additionalDirectionsLabel" for="additionalDirections">Safety Guidelines:</label>
+            <textarea id="additionalDirections" name="additionalDirections" rows="4" placeholder="Please follow these safety guidelines when dropping off your freight:
+1. Enter the parking lot from [Entrance Location].
+2. Follow signs for freight drop-off to the designated area.
+3. Park in the designated parking spots marked for freight drop-offs.
+4. Check in at the [Check-in Location] to notify staff of your arrival.
+5. Unload freight at the designated area.
+6. Exit the parking lot from [Exit Location]."></textarea>
+            <button id="submitButton" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="message-screen" id="messageScreen">
+        <h2 id="messageTitle"></h2>
+        <p id="messageContent"></p>
+    </div>
+
+    <footer>
+        <p id="footerText">For any questions or assistance, please contact [Contact Information].</p>
+    </footer>
+
+    <script>
+        function changeLanguage() {
+            var selectedLanguage = document.getElementById("language").value;
+
+            // Update form title based on selected language
+            var formTitle = document.getElementById("formTitle");
+            var gateNumberLabel = document.getElementById("gateNumberLabel");
+            var gateNumberInput = document.getElementById("gateNumber");
+            var additionalDirectionsLabel = document.getElementById("additionalDirectionsLabel");
+            var additionalDirectionsTextarea = document.getElementById("additionalDirections");
+            var submitButton = document.getElementById("submitButton");
+            var footerText = document.getElementById("footerText");
+            switch (selectedLanguage) {
+                case 'en':
+                    formTitle.textContent = "Enter Assigned Dock Door Number";
+                    gateNumberLabel.textContent = "Door Number:";
+                    gateNumberInput.placeholder = "Enter the door number where you need to drop off the freight...";
+                    additionalDirectionsLabel.textContent = "Safety Guidelines:";
+                    additionalDirectionsTextarea.placeholder = "Please follow these safety guidelines when dropping off your freight:\n1. Enter the parking lot from [Entrance Location].\n2. Follow signs for freight drop-off to the designated area.\n3. Park in the designated parking spots marked for freight drop-offs.\n4. Check in at the [Check-in Location] to notify staff of your arrival.\n5. Unload freight at the designated area.\n6. Exit the parking lot from [Exit Location].";
+                    submitButton.textContent = "Submit";
+                    footerText.textContent = "For any questions or assistance, please contact [Contact Information].";
+                    break;
+                case 'es':
+                    formTitle.textContent = "Ingrese el número de puerta asignado";
+                    gateNumberLabel.textContent = "Número de puerta:";
+                    gateNumberInput.placeholder = "Ingrese el número de puerta donde necesita dejar la carga...";
+                    additionalDirectionsLabel.textContent = "Pautas de seguridad:";
+                    additionalDirectionsTextarea.placeholder = "Por favor, siga estas pautas de seguridad cuando deje su carga:\n1. Ingrese al estacionamiento desde [Ubicación de Entrada].\n2. Siga las señales para la entrega de carga hasta el área designada.\n3. Estacione en los lugares designados para entregas de carga.\n4. Regístrese en [Ubicación de Registro] para notificar al personal de su llegada.\n5. Descargue la carga en el área designada.\n6. Salga del estacionamiento desde [Ubicación de Salida].";
+                    submitButton.textContent = "Enviar";
+                    footerText.textContent = "Para cualquier pregunta o asistencia, por favor contacte a [Información de Contacto].";
+                    break;
+                case 'ru':
+                    formTitle.textContent = "Введите номер назначенного докового ворот";
+                    gateNumberLabel.textContent = "Номер ворот:";
+                    gateNumberInput.placeholder = "Введите номер ворот, где нужно сдать груз...";
+                    additionalDirectionsLabel.textContent = "Инструкции по безопасности:";
+                    additionalDirectionsTextarea.placeholder = "Пожалуйста, следуйте этим правилам безопасности при сдаче груза:\n1. Въезжайте на парковку с [Местоположение Въезда].\n2. Следуйте указателям к месту выгрузки груза.\n3. Паркуйтесь на местах, отмеченных для выгрузки груза.\n4. Зарегистрируйтесь в [Местоположение Регистрации], чтобы уведомить персонал о вашем прибытии.\n5. Выгружайте груз в указанном месте.\n6. Выезжайте с парковки с [Местоположение Выезда].";
+                    submitButton.textContent = "Отправить";
+                    footerText.textContent = "Для любых вопросов или помощи, пожалуйста, свяжитесь с [Контактная Информация].";
+                    break;
+                case 'fr':
+                    formTitle.textContent = "Entrer le numéro de porte assigné";
+                    gateNumberLabel.textContent = "Numéro de porte:";
+                    gateNumberInput.placeholder = "Entrez le numéro de porte où vous devez déposer la marchandise...";
+                    additionalDirectionsLabel.textContent = "Consignes de sécurité:";
+                    additionalDirectionsTextarea.placeholder = "Veuillez suivre ces consignes de sécurité lorsque vous déposez votre marchandise:\n1. Entrez sur le parking depuis [Emplacement de l'Entrée].\n2. Suivez les panneaux pour le dépôt de marchandises jusqu'à la zone désignée.\n3. Garez-vous sur les places de parking désignées pour les dépôts de marchandises.\n4. Enregistrez-vous à [Emplacement d'Enregistrement] pour informer le personnel de votre arrivée.\n5. Déchargez la marchandise dans la zone désignée.\n6. Sortez du parking par [Emplacement de Sortie].";
+                    submitButton.textContent = "Soumettre";
+                    footerText.textContent = "Pour toute question ou assistance, veuillez contacter [Informations de Contact].";
+                    break;
+                case 'de':
+                    formTitle.textContent = "Geben Sie die zugewiesene Tor Nummer ein";
+                    gateNumberLabel.textContent = "Tor Nummer:";
+                    gateNumberInput.placeholder = "Geben Sie die Tor Nummer ein, an der Sie die Fracht abgeben müssen...";
+                    additionalDirectionsLabel.textContent = "Sicherheitsrichtlinien:";
+                    additionalDirectionsTextarea.placeholder = "Bitte befolgen Sie diese Sicherheitsrichtlinien, wenn Sie Ihre Fracht abliefern:\n1. Fahren Sie von [Eingangsort] auf den Parkplatz.\n2. Folgen Sie den Schildern für die Frachtabgabe zum ausgewiesenen Bereich.\n3. Parken Sie auf den ausgewiesenen Parkplätzen für Frachtabgaben.\n4. Melden Sie sich am [Anmeldeort] an, um das Personal über Ihre Ankunft zu informieren.\n5. Entladen Sie die Fracht im ausgewiesenen Bereich.\n6. Verlassen Sie den Parkplatz über [Ausfahrtsort].";
+                    submitButton.textContent = "Einreichen";
+                    footerText.textContent = "Für Fragen oder Unterstützung wenden Sie sich bitte an [Kontaktinformationen].";
+                    break;
+                case 'ht':
+                    formTitle.textContent = "Antre nimewo pòt ki asiyen an";
+                    gateNumberLabel.textContent = "Nimewo pòt:";
+                    gateNumberInput.placeholder = "Antre nimewo pòt kote ou bezwen depoze machandiz la...";
+                    additionalDirectionsLabel.textContent = "Direktiv Sekirite:";
+                    additionalDirectionsTextarea.placeholder = "Tanpri swiv direktiv sekirite sa yo lè wap depoze machandiz ou:\n1. Antre nan pakin nan soti nan [Kote Antre].\n2. Swiv siy pou depoze machandiz nan zòn ki deziyen an.\n3. Pake nan kote ki make pou depoze machandiz yo.\n4. Tcheke nan [Kote Tcheke-an] pou notifye pèsonèl la sou arive ou.\n5. Debake machandiz nan zòn ki deziyen an.\n6. Soti nan pakin nan soti nan [Kote Sòti].";
+                    submitButton.textContent = "Soumèt";
+                    footerText.textContent = "Pou nenpòt kesyon oswa asistans, tanpri kontakte [Enfòmasyon Kontak].";
+                    break;
+                case 'it':
+                    formTitle.textContent = "Inserisci il numero della porta assegnata";
+                    gateNumberLabel.textContent = "Numero della porta:";
+                    gateNumberInput.placeholder = "Inserisci il numero della porta dove devi consegnare la merce...";
+                    additionalDirectionsLabel.textContent = "Linee guida sulla sicurezza:";
+                    additionalDirectionsTextarea.placeholder = "Si prega di seguire queste linee guida sulla sicurezza quando si deposita la merce:\n1. Entra nel parcheggio da [Posizione di Ingresso].\n2. Segui i cartelli per la consegna delle merci all'area designata.\n3. Parcheggia nei posti designati per le consegne delle merci.\n4. Effettua il check-in presso [Posizione di Check-in] per informare il personale del tuo arrivo.\n5. Scarica la merce nell'area designata.\n6. Esci dal parcheggio da [Posizione di Uscita].";
+                    submitButton.textContent = "Invia";
+                    footerText.textContent = "Per qualsiasi domanda o assistenza, si prega di contattare [Informazioni di Contatto].";
+                    break;
+                case 'pa':
+                    formTitle.textContent = "ਨਿਰਧਾਰਤ ਡੌਕ ਦਾ ਨੰਬਰ ਦਰਜ ਕਰੋ";
+                    gateNumberLabel.textContent = "ਡੌਰ ਨੰਬਰ:";
+                    gateNumberInput.placeholder = "ਉਸ ਡੌਰ ਨੰਬਰ ਨੂੰ ਦਰਜ ਕਰੋ ਜਿੱਥੇ ਤੁਹਾਨੂੰ ਸਮਾਨ ਛੱਡਣਾ ਹੈ...";
+                    additionalDirectionsLabel.textContent = "ਸੁਰੱਖਿਆ ਨਿਯਮ:";
+                    additionalDirectionsTextarea.placeholder = "ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੇ ਸਮਾਨ ਨੂੰ ਛੱਡਦੇ ਸਮੇਂ ਇਹ ਸੁਰੱਖਿਆ ਨਿਯਮਾਂ ਦੀ ਪਾਲਣਾ ਕਰੋ:\n1. [ਦਾਖਲਾ ਸਥਾਨ] ਤੋਂ ਪਾਰਕਿੰਗ ਲਾਟ ਵਿੱਚ ਪ੍ਰਵਿੱਸ਼ ਕਰੋ।\n2. ਨਿਰਧਾਰਿਤ ਖੇਤਰ ਵਿੱਚ ਸਮਾਨ ਛੱਡਣ ਲਈ ਇਸ਼ਾਰਿਆਂ ਦੀ ਪਾਲਣਾ ਕਰੋ।\n3. ਸਮਾਨ ਛੱਡਣ ਲਈ ਨਿਸ਼ਾਨ ਲਗੇ ਪਾਰਕਿੰਗ ਸਪੌਟਸ ਵਿੱਚ ਪਾਰਕ ਕਰੋ।\n4. ਆਪਣੇ ਆਗਮਨ ਦੀ ਸੂਚਨਾ ਦੇਣ ਲਈ [ਚੈੱਕ-ਇਨ ਸਥਾਨ] ਤੇ ਚੈਕ-ਇਨ ਕਰੋ।\n5. ਨਿਰਧਾਰਿਤ ਖੇਤਰ ਵਿੱਚ ਸਮਾਨ ਉਤਾਰੋ।\n6. [ਨਿਕਾਸ ਸਥਾਨ] ਤੋਂ ਪਾਰਕਿੰਗ ਲਾਟ ਤੋਂ ਬਾਹਰ ਨਿਕਲੋ।";
+                    submitButton.textContent = "ਸਬਮਿਟ ਕਰੋ";
+                    footerText.textContent = "ਕਿਸੇ ਵੀ ਸਵਾਲ ਜਾਂ ਮਦਦ ਲਈ, ਕਿਰਪਾ ਕਰਕੇ ਸੰਪਰਕ ਕਰੋ [ਸੰਪਰਕ ਜਾਣਕਾਰੀ].";
+                    break;
+                case 'hi':
+                    formTitle.textContent = "नियत गोदी द्वार संख्या दर्ज करें";
+                    gateNumberLabel.textContent = "द्वार संख्या:";
+                    gateNumberInput.placeholder = "उस द्वार संख्या को दर्ज करें जहां आपको माल उतारना है...";
+                    additionalDirectionsLabel.textContent = "सुरक्षा दिशानिर्देश:";
+                    additionalDirectionsTextarea.placeholder = "कृपया अपने माल को उतारते समय इन सुरक्षा दिशानिर्देशों का पालन करें:\n1. [प्रवेश स्थान] से पार्किंग स्थल में प्रवेश करें।\n2. माल की डिलीवरी के लिए संकेतों का पालन करें।\n3. माल की डिलीवरी के लिए निर्दिष्ट पार्किंग स्थानों पर पार्क करें।\n4. अपनी आगमन की सूचना देने के लिए [चेक-इन स्थान] पर चेक-इन करें।\n5. माल को निर्दिष्ट क्षेत्र में उतारें।\n6. [निकास स्थान] से पार्किंग स्थल से बाहर निकलें।";
+                    submitButton.textContent = "सबमिट करें";
+                    footerText.textContent = "किसी भी प्रश्न या सहायता के लिए कृपया संपर्क करें [संपर्क जानकारी].";
+                    break;
+                default:
+                    formTitle.textContent = "Enter Assigned Dock Door Number";
+                    gateNumberLabel.textContent = "Door Number:";
+                    gateNumberInput.placeholder = "Enter the door number where you need to drop off the freight...";
+                    additionalDirectionsLabel.textContent = "Safety Guidelines:";
+                    additionalDirectionsTextarea.placeholder = "Please follow these safety guidelines when dropping off your freight:\n1. Enter the parking lot from [Entrance Location].\n2. Follow signs for freight drop-off to the designated area.\n3. Park in the designated parking spots marked for freight drop-offs.\n4. Check in at the [Check-in Location] to notify staff of your arrival.\n5. Unload freight at the designated area.\n6. Exit the parking lot from [Exit Location].";
+                    submitButton.textContent = "Submit";
+                    footerText.textContent = "For any questions or assistance, please contact [Contact Information].";
+                    break;
+            }
+
+             // Show the main form container
+             document.getElementById("mainFormContainer").style.display = "block";
+        }
+
+        // Function to handle form submission
+document.getElementById("directionsForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent form from submitting normally
+    var gateNumber = document.getElementById("gateNumber").value.trim();
+
+    // Function to display message screen
+    function displayMessage(title, message) {
+        document.getElementById("messageTitle").textContent = title;
+        document.getElementById("messageContent").textContent = message;
+        document.getElementById("messageScreen").style.display = "block";
+        document.getElementById("mainFormContainer").style.display = "none";
+    }
+
+    // Logic to determine the message based on the gate number
+    var gateNumberInt = parseInt(gateNumber); // Convert input to integer for numerical comparison
+
+    if (gateNumberInt >= 1 && gateNumberInt <= 33) {
+        displayMessage("Gate 1-33 Instructions", "Proceed to your Door and follow the directions below for freight drop-off: _______________");
+    } else if (gateNumberInt >= 34 && gateNumberInt <= 71) {
+        displayMessage("Gate 34-71 Instructions", "Proceed to your Door and follow the directions below for freight drop-off: _______");
+    } else if (gateNumber === "0") {
+        displayMessage("Waiting Area Instructions", "Proceed to the Waiting Area and follow the directions below: _____ ");
+    } else {
+        displayMessage("Invalid Gate Number", "Please enter a valid gate number between 1 and 71.");
+    }
+});
+
+    </script>
+</body>
+</html>
